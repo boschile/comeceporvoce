@@ -1,0 +1,9 @@
+# Netlify detecta o Next.js automaticamente e instala o runtime v5
+# (@netlify/plugin-nextjs). Aqui só fixamos o comando de build — que já
+# roda "prisma generate" antes do "next build" — e a versão do Node.
+
+[build]
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "20"

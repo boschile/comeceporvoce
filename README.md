@@ -5,7 +5,7 @@ Funil completo (não apenas um site) para um relatório personalizado a partir d
 padrões → captura de contato (LGPD) → relatório completo em PDF por e-mail → painel
 administrativo para acompanhamento.
 
-Stack: **Next.js 14** (App Router, TypeScript), **Tailwind**, **Prisma + SQLite**,
+Stack: **Next.js 14** (App Router, TypeScript), **Tailwind**, **Prisma + PostgreSQL**,
 **@react-pdf/renderer**, **nodemailer**. Sem dependência de serviços pagos para rodar.
 
 ---
@@ -17,7 +17,7 @@ Pré-requisitos: Node 18+ (testado no 22) e npm.
 ```bash
 npm install                 # instala deps e gera o Prisma Client
 cp .env.example .env        # configure as variáveis (veja abaixo)
-npm run db:push             # cria o banco SQLite (dev.db)
+npm run db:push             # cria as tabelas no seu Postgres (ex. Neon)
 npm run dev                 # http://localhost:3000
 ```
 
@@ -34,7 +34,7 @@ elegância** quando a chave não existe (nada quebra, a integração apenas não
 
 | Variável | Obrigatória | Para quê |
 |---|---|---|
-| `DATABASE_URL` | ✅ | Banco. Padrão `file:./dev.db` |
+| `DATABASE_URL` | ✅ | Postgres (ex. Neon). Formato `postgresql://...?sslmode=require` |
 | `ADMIN_PASSWORD` | ✅ | Senha do painel `/admin` |
 | `ADMIN_SESSION_SECRET` | ✅ | Assina o cookie de sessão do admin |
 | `NEXT_PUBLIC_SITE_URL` | recomendada | URL pública (SEO, OpenGraph, sitemap) |
@@ -87,8 +87,8 @@ Personalização de marca (nome, domínio, e-mail, textos): tudo em
 
 ## Para produção
 
-- Troque **SQLite por Postgres** (ajuste `provider` no `schema.prisma` e a
-  `DATABASE_URL`). SQLite é ótimo para desenvolvimento e um operador só.
+- O banco já está em **Postgres** (pronto para Netlify/Vercel/Neon). Para publicar
+  na Netlify, siga o `DEPLOY-NETLIFY.md`.
 - Configure SMTP real para o envio do PDF.
 - Meta de **Lighthouse 95+** é o alvo do design (fontes locais, JS enxuto, imagens
   controladas), mas confirme com um teste real no seu domínio antes de afirmar o número.
